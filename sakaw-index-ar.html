@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAKAW — قطّع. اضخّم. تحوّل.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Tajawal:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0c0e;
+    --bg-soft: #0e1114;
+    --card: #14181d;
+    --card-hi: #191e24;
+    --border: rgba(255,255,255,0.07);
+    --border-hi: rgba(255,255,255,0.14);
+    --green: #39e67a;
+    --green-dim: #1f8a4d;
+    --gold: #e8a94b;
+    --orange: #e8703a;
+    --text: #f2f4f1;
+    --text-muted: #93999f;
+    --text-faint: #5c6268;
+    --radius: 14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Tajawal',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  .mono{font-family:'JetBrains Mono',monospace; direction:ltr; unicode-bidi:plaintext;}
+  .display{font-family:'Tajawal',sans-serif;}
+  .brand{font-family:'Syne',sans-serif; direction:ltr; unicode-bidi:embed;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  section{position:relative;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  @media(max-width:640px){.wrap{padding:0 20px;}}
+
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background:
+      radial-gradient(circle at 85% 8%, rgba(57,230,122,0.10), transparent 45%),
+      radial-gradient(circle at 12% 20%, rgba(232,169,75,0.08), transparent 40%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ===== Header ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,12,14,0.75);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    height:76px;
+  }
+  .logo{
+    font-weight:800;
+    font-size:24px;
+    letter-spacing:0.5px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo .bar{
+    width:26px; height:6px; border-radius:3px;
+    background:linear-gradient(90deg,var(--green),var(--gold));
+  }
+  .navlinks{display:flex; gap:36px; font-size:14.5px; font-weight:500; color:var(--text-muted);}
+  .navlinks a{transition:color .2s;}
+  .navlinks a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--green);
+    color:#06110b;
+    padding:11px 22px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:14px;
+    transition:transform .15s, box-shadow .2s;
+  }
+  .nav-cta:hover{transform:translateY(-1px); box-shadow:0 6px 24px rgba(57,230,122,0.35);}
+  @media(max-width:860px){
+    .navlinks{display:none;}
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    padding:110px 0 90px;
+    position:relative;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--green);
+    background:rgba(57,230,122,0.08);
+    border:1px solid rgba(57,230,122,0.25);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:28px;
+    letter-spacing:0.5px;
+    direction:rtl;
+  }
+  .eyebrow::before{content:'●'; font-size:8px;}
+  h1.hero-title{
+    font-weight:800;
+    font-size:clamp(36px,5.6vw,64px);
+    line-height:1.25;
+    letter-spacing:-0.5px;
+    max-width:760px;
+  }
+  h1.hero-title .grad{
+    background:linear-gradient(90deg,var(--green),var(--gold));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-sub{
+    margin-top:24px;
+    font-size:18px;
+    color:var(--text-muted);
+    max-width:560px;
+    line-height:1.8;
+  }
+  .hero-actions{
+    margin-top:40px;
+    display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+  }
+  .btn-primary{
+    background:var(--green);
+    color:#06110b;
+    padding:16px 30px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:15px;
+    display:inline-flex; align-items:center; gap:10px;
+    box-shadow:0 8px 30px rgba(57,230,122,0.25);
+    transition:transform .15s;
+    border:none; cursor:pointer;
+  }
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{
+    padding:16px 26px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:15px;
+    color:var(--text);
+    border:1px solid var(--border-hi);
+    transition:border-color .2s, background .2s;
+  }
+  .btn-ghost:hover{border-color:var(--gold); background:rgba(232,169,75,0.06);}
+
+  .hero-stats{
+    margin-top:70px;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+    border-top:1px solid var(--border);
+    padding-top:32px;
+  }
+  .stat{padding-left:24px;}
+  .stat + .stat{border-right:1px solid var(--border); padding-right:24px;}
+  .stat .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:30px; font-weight:700;
+    color:var(--text);
+    direction:ltr;
+  }
+  .stat .num span{color:var(--green);}
+  .stat .label{font-size:13px; color:var(--text-faint); margin-top:6px;}
+  @media(max-width:760px){
+    .hero-stats{grid-template-columns:repeat(2,1fr); row-gap:24px;}
+    .stat:nth-child(3){border-right:none;}
+  }
+
+  /* ===== Section heading pattern ===== */
+  .section-head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    margin-bottom:48px; gap:24px; flex-wrap:wrap;
+  }
+  .section-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px; color:var(--text-faint);
+    letter-spacing:1px;
+    margin-bottom:10px; display:block;
+    direction:ltr; text-align:right;
+  }
+  h2.section-title{
+    font-weight:700;
+    font-size:clamp(26px,3.2vw,38px);
+  }
+  .section-desc{color:var(--text-muted); max-width:420px; font-size:15px; line-height:1.8;}
+
+  /* ===== Calculator ===== */
+  .calc-section{padding:100px 0; background:var(--bg-soft); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
+  .calc-shell{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  @media(max-width:900px){.calc-shell{grid-template-columns:1fr;}}
+
+  .calc-form{padding:44px; border-left:1px solid var(--border);}
+  @media(max-width:900px){.calc-form{border-left:none; border-bottom:1px solid var(--border);}}
+
+  .mode-toggle{
+    display:flex; background:var(--bg-soft); border-radius:999px; padding:4px;
+    margin-bottom:32px; border:1px solid var(--border);
+  }
+  .mode-toggle button{
+    flex:1; padding:11px; border-radius:999px; border:none; background:transparent;
+    color:var(--text-muted); font-weight:700; font-size:14px; cursor:pointer;
+    transition:all .2s; font-family:'Tajawal',sans-serif;
+  }
+  .mode-toggle button.active[data-mode="cut"]{background:var(--green); color:#06110b;}
+  .mode-toggle button.active[data-mode="bulk"]{background:var(--gold); color:#1a1000;}
+
+  .field{margin-bottom:20px;}
+  .field label{
+    display:block; font-size:12.5px; color:var(--text-faint);
+    margin-bottom:8px; font-family:'JetBrains Mono',monospace; letter-spacing:.3px;
+    direction:ltr; text-align:right;
+  }
+  .field input, .field select{
+    width:100%; background:var(--bg-soft); border:1px solid var(--border);
+    border-radius:10px; padding:13px 14px; color:var(--text); font-size:14.5px;
+    font-family:'Tajawal',sans-serif; transition:border-color .2s;
+  }
+  .field input:focus, .field select:focus{outline:none; border-color:var(--green);}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+
+  .calc-results{padding:44px; display:flex; flex-direction:column; justify-content:center;}
+  .result-big{
+    font-family:'JetBrains Mono',monospace;
+    font-size:48px; font-weight:700;
+    color:var(--green);
+    line-height:1;
+    direction:ltr;
+  }
+  .calc-results.mode-bulk .result-big{color:var(--gold);}
+  .result-label{color:var(--text-muted); font-size:14px; margin-top:8px; margin-bottom:36px;}
+
+  .macro-bars{display:flex; flex-direction:column; gap:18px;}
+  .macro-row{display:flex; align-items:center; gap:14px;}
+  .macro-name{width:80px; font-size:13px; color:var(--text-muted); font-weight:600;}
+  .macro-track{flex:1; height:8px; border-radius:5px; background:var(--bg-soft); overflow:hidden;}
+  .macro-fill{height:100%; border-radius:5px;}
+  .macro-fill.protein{background:var(--green);}
+  .macro-fill.carbs{background:var(--gold);}
+  .macro-fill.fat{background:var(--orange);}
+  .macro-val{width:70px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:13.5px; color:var(--text); direction:ltr;}
+
+  .calc-note{
+    margin-top:32px; font-size:12px; color:var(--text-faint);
+    border-top:1px solid var(--border); padding-top:18px; line-height:1.8;
+  }
+
+  /* ===== Plans ===== */
+  .plans{padding:110px 0;}
+  .plans-grid{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  @media(max-width:820px){.plans-grid{grid-template-columns:1fr;}}
+  .plan-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:40px;
+    position:relative;
+    overflow:hidden;
+  }
+  .plan-card::before{
+    content:''; position:absolute; top:-40%; left:-40%;
+    width:280px; height:280px; border-radius:50%;
+    filter:blur(60px); opacity:.18;
+  }
+  .plan-card.cut::before{background:var(--green);}
+  .plan-card.bulk::before{background:var(--gold);}
+  .plan-tag{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:1px;
+    padding:6px 12px; border-radius:999px;
+    display:inline-block; margin-bottom:24px;
+    direction:ltr;
+  }
+  .plan-card.cut .plan-tag{background:rgba(57,230,122,0.1); color:var(--green); border:1px solid rgba(57,230,122,.3);}
+  .plan-card.bulk .plan-tag{background:rgba(232,169,75,0.1); color:var(--gold); border:1px solid rgba(232,169,75,.3);}
+  .plan-card h3{font-size:28px; font-weight:700; margin-bottom:14px;}
+  .plan-card p.plan-desc{color:var(--text-muted); font-size:14.5px; margin-bottom:28px; line-height:1.8;}
+  .plan-list{list-style:none; display:flex; flex-direction:column; gap:14px; margin-bottom:32px;}
+  .plan-list li{display:flex; align-items:flex-start; gap:12px; font-size:14.5px; color:var(--text);}
+  .plan-list li::before{content:'—'; color:var(--text-faint); flex-shrink:0;}
+  .plan-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 24px; border-radius:999px; font-weight:700; font-size:14px;
+    border:1px solid var(--border-hi); transition:all .2s;
+  }
+  .plan-card.cut .plan-btn:hover{border-color:var(--green); background:rgba(57,230,122,0.08); color:var(--green);}
+  .plan-card.bulk .plan-btn:hover{border-color:var(--gold); background:rgba(232,169,75,0.08); color:var(--gold);}
+
+  /* ===== Progress / Success ===== */
+  .progress-section{padding:100px 0 120px; background:var(--bg-soft); border-top:1px solid var(--border);}
+  .stories-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media(max-width:900px){.stories-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:620px){.stories-grid{grid-template-columns:1fr;}}
+  .story-card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:28px; display:flex; flex-direction:column; gap:18px;
+  }
+  .story-top{display:flex; align-items:center; gap:12px;}
+  .avatar{
+    width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:15px;
+    color:#06110b;
+  }
+  .story-name{font-weight:700; font-size:14.5px;}
+  .story-goal{font-size:11.5px; color:var(--text-faint); font-family:'JetBrains Mono',monospace; direction:ltr; display:block; text-align:right;}
+  .story-metrics{display:flex; gap:0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:16px 0;}
+  .metric{flex:1; text-align:center;}
+  .metric + .metric{border-right:1px solid var(--border);}
+  .metric .v{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:18px; direction:ltr; display:block;}
+  .metric .l{font-size:11px; color:var(--text-faint); margin-top:4px;}
+  .story-quote{font-size:13.5px; color:var(--text-muted); line-height:1.8; font-style:italic;}
+
+  /* ===== Footer ===== */
+  footer{padding:50px 0 40px; border-top:1px solid var(--border);}
+  .foot-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;}
+  .foot-links{display:flex; gap:28px; font-size:13.5px; color:var(--text-muted);}
+  .foot-copy{font-size:12.5px; color:var(--text-faint); margin-top:24px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo brand"><span>SAKAW</span><span class="bar"></span></div>
+    <nav class="navlinks">
+      <a href="#calculators">الحاسبة</a>
+      <a href="#plans">الخطط</a>
+      <a href="#progress">النتائج</a>
+    </nav>
+    <a href="#calculators" class="nav-cta">اعرف خطتك</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">تقطيع · تضخيم · مبني على أرقامك</span>
+    <h1 class="hero-title">اعرف أرقامك أولًا،<br>وبعدين <span class="grad">بني الجسم</span> اللي يناسبها.</h1>
+    <p class="hero-sub">SAKAW بيحسبلك السعرات والماكروز المناسبة لهدفك بالضبط، وبعدها يعطيك خطة تقطيع أو تضخيم منظمة لتحقيقها. بدون تخمين، وبدون قوالب عامة.</p>
+    <div class="hero-actions">
+      <a href="#calculators" class="btn-primary">احسب ماكروزاتي ←</a>
+      <a href="#plans" class="btn-ghost">شاهد الخطط</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="num"><span>+12k</span></div><div class="label">خطة تم إنشاؤها</div></div>
+      <div class="stat"><div class="num">2</div><div class="label">برنامج مركّز</div></div>
+      <div class="stat"><div class="num">4.9<span>/5</span></div><div class="label">تقييم المستخدمين</div></div>
+      <div class="stat"><div class="num">100<span>%</span></div><div class="label">مبني على معادلات</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="calc-section" id="calculators">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">SMART CALCULATOR</span>
+        <h2 class="section-title">معدل حرقك، احتياجك اليومي، وماكروزاتك</h2>
+      </div>
+      <p class="section-desc">ادخل بياناتك مرة واحدة، وبدّل بين التقطيع والتضخيم لتشاهد كيف تتغير أرقامك.</p>
+    </div>
+
+    <div class="calc-shell">
+      <div class="calc-form">
+        <div class="mode-toggle">
+          <button data-mode="cut" class="active">تقطيع</button>
+          <button data-mode="bulk">تضخيم</button>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label>الجنس</label>
+            <select id="sex">
+              <option value="male">ذكر</option>
+              <option value="female">أنثى</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>العمر</label>
+            <input type="number" id="age" value="25" min="14" max="80">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>الوزن (كجم)</label>
+            <input type="number" id="weight" value="75" min="30" max="250">
+          </div>
+          <div class="field">
+            <label>الطول (سم)</label>
+            <input type="number" id="height" value="178" min="120" max="230">
+          </div>
+        </div>
+        <div class="field">
+          <label>مستوى النشاط</label>
+          <select id="activity">
+            <option value="1.2">خامل — قليل أو بدون تمرين</option>
+            <option value="1.375">خفيف — 1–3 تمارين أسبوعيًا</option>
+            <option value="1.55" selected>متوسط — 3–5 تمارين أسبوعيًا</option>
+            <option value="1.725">عالي — 6–7 تمارين أسبوعيًا</option>
+            <option value="1.9">عالي جدًا — عمل بدني + تمرين</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-results" id="calcResults">
+        <div class="result-big" id="tdeeOut">0</div>
+        <div class="result-label" id="tdeeLabel">السعرات اليومية — هدف التقطيع</div>
+
+        <div class="macro-bars">
+          <div class="macro-row">
+            <div class="macro-name">بروتين</div>
+            <div class="macro-track"><div class="macro-fill protein" id="proteinBar" style="width:0%"></div></div>
+            <div class="macro-val" id="proteinVal">0 g</div>
+          </div>
+          <div class="macro-row">
+            <div class="macro-name">كاربوهيدرات</div>
+            <div class="macro-track"><div class="macro-fill carbs" id="carbsBar" style="width:0%"></div></div>
+            <div class="macro-val" id="carbsVal">0 g</div>
+          </div>
+          <div class="macro-row">
+            <div class="macro-name">دهون</div>
+            <div class="macro-track"><div class="macro-fill fat" id="fatBar" style="width:0%"></div></div>
+            <div class="macro-val" id="fatVal">0 g</div>
+          </div>
+        </div>
+
+        <div class="calc-note">
+          معدل الحرق عبر معادلة Mifflin-St Jeor · الاحتياج اليومي = معدل الحرق × معامل النشاط · التقطيع = الاحتياج −20% · التضخيم = الاحتياج +15% · البروتين 2.2 جم/كجم (تقطيع) أو 2 جم/كجم (تضخيم)، الدهون 25% من السعرات، والكاربوهيدرات تكمّل الباقي.
+          <br>هذه معادلات مؤقتة — تبعتلي معادلاتك الدقيقة وأستبدلها فورًا.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plans" id="plans">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">PROGRAMS</span>
+        <h2 class="section-title">اختار مرحلتك</h2>
+      </div>
+      <p class="section-desc">مساران واضحان، نفس الانضباط، اتجاه مختلف.</p>
+    </div>
+
+    <div class="plans-grid">
+      <div class="plan-card cut">
+        <span class="plan-tag">CUTTING</span>
+        <h3>رشاقة وتحديد</h3>
+        <p class="plan-desc">عجز سعري منظم مصمم لخسارة الدهون مع الحفاظ على كل جرام عضلة بنيته.</p>
+        <ul class="plan-list">
+          <li>عجز سعري تدريجي يتم تعديله كل أسبوعين</li>
+          <li>ماكروز عالية البروتين للحفاظ على الكتلة العضلية</li>
+          <li>برنامج تدريب للحفاظ على القوة أثناء التقطيع</li>
+          <li>متابعة أسبوعية لتجنب الثبات في النتائج</li>
+        </ul>
+        <a href="#calculators" class="plan-btn">ابدأ التقطيع ←</a>
+      </div>
+
+      <div class="plan-card bulk">
+        <span class="plan-tag">BULKING</span>
+        <h3>ضخامة وقوة</h3>
+        <p class="plan-desc">فائض سعري محسوب يعطي الأولوية لبناء العضلات بدون دهون زائدة غير ضرورية.</p>
+        <ul class="plan-list">
+          <li>فائض سعري محسوب من احتياجك اليومي، لا تخمين</li>
+          <li>برنامج تدريب مبني على مبدأ الحمل التدريجي</li>
+          <li>ماكروز مصممة للأداء والاستشفاء</li>
+          <li>إعادة حساب شهرية مع زيادة وزنك</li>
+        </ul>
+        <a href="#calculators" class="plan-btn">ابدأ التضخيم ←</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="progress-section" id="progress">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">REAL RESULTS</span>
+        <h2 class="section-title">نتائج تتكلم عن نفسها</h2>
+      </div>
+      <p class="section-desc">كل رقم في الأسفل يمثل شخص طبّق الخطة، تابع أرقامه، واستمر عليها.</p>
+    </div>
+
+    <div class="stories-grid">
+      <div class="story-card">
+        <div class="story-top">
+          <div class="avatar" style="background:var(--green);">ك</div>
+          <div>
+            <div class="story-name">كريم</div>
+            <div class="story-goal">CUTTING · 14 WEEKS</div>
+          </div>
+        </div>
+        <div class="story-metrics">
+          <div class="metric"><div class="v" style="color:var(--green);">-9kg</div><div class="l">الوزن</div></div>
+          <div class="metric"><div class="v">-4%</div><div class="l">نسبة الدهون</div></div>
+          <div class="metric"><div class="v">14</div><div class="l">أسبوع</div></div>
+        </div>
+        <p class="story-quote">"اتباع أرقام الماكروز الدقيقة بدل التخمين كان أكبر فرق حسّيته."</p>
+      </div>
+
+      <div class="story-card">
+        <div class="story-top">
+          <div class="avatar" style="background:var(--gold);">م</div>
+          <div>
+            <div class="story-name">مصطفى</div>
+            <div class="story-goal">BULKING · 16 WEEKS</div>
+          </div>
+        </div>
+        <div class="story-metrics">
+          <div class="metric"><div class="v" style="color:var(--gold);">+7kg</div><div class="l">الوزن</div></div>
+          <div class="metric"><div class="v">+11kg</div><div class="l">بنش براس</div></div>
+          <div class="metric"><div class="v">16</div><div class="l">أسبوع</div></div>
+        </div>
+        <p class="story-quote">"زودت في الحجم بدون الإحساس بالانتفاخ اللي كنت حاسه في التضخيم القديم."</p>
+      </div>
+
+      <div class="story-card">
+        <div class="story-top">
+          <div class="avatar" style="background:var(--green);">س</div>
+          <div>
+            <div class="story-name">سارة</div>
+            <div class="story-goal">CUTTING · 10 WEEKS</div>
+          </div>
+        </div>
+        <div class="story-metrics">
+          <div class="metric"><div class="v" style="color:var(--green);">-6kg</div><div class="l">الوزن</div></div>
+          <div class="metric"><div class="v">-3%</div><div class="l">نسبة الدهون</div></div>
+          <div class="metric"><div class="v">10</div><div class="l">أسبوع</div></div>
+        </div>
+        <p class="story-quote">"المتابعة الأسبوعية خلتني ملتزمة حتى في الأسابيع اللي كانت حماستي فيها ضعيفة."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div class="logo brand" style="font-size:20px;"><span>SAKAW</span><span class="bar" style="width:20px;height:5px;"></span></div>
+      <div class="foot-links">
+        <a href="#calculators">الحاسبة</a>
+        <a href="#plans">الخطط</a>
+        <a href="#progress">النتائج</a>
+      </div>
+    </div>
+    <div class="foot-copy">© 2026 Sakaw. مصمم لمن يتمرن بهدف واضح.</div>
+  </div>
+</footer>
+
+<script>
+  let mode = 'cut';
+  const toggleBtns = document.querySelectorAll('.mode-toggle button');
+  const resultsPanel = document.getElementById('calcResults');
+
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggleBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mode = btn.dataset.mode;
+      resultsPanel.classList.toggle('mode-bulk', mode === 'bulk');
+      calculate();
+    });
+  });
+
+  ['sex','age','weight','height','activity'].forEach(id => {
+    document.getElementById(id).addEventListener('input', calculate);
+    document.getElementById(id).addEventListener('change', calculate);
+  });
+
+  function calculate(){
+    const sex = document.getElementById('sex').value;
+    const age = parseFloat(document.getElementById('age').value) || 0;
+    const weight = parseFloat(document.getElementById('weight').value) || 0;
+    const height = parseFloat(document.getElementById('height').value) || 0;
+    const activity = parseFloat(document.getElementById('activity').value);
+
+    // Mifflin-St Jeor BMR (placeholder — swap with your own formula)
+    let bmr = sex === 'male'
+      ? 10 * weight + 6.25 * height - 5 * age + 5
+      : 10 * weight + 6.25 * height - 5 * age - 161;
+
+    const tdee = bmr * activity;
+
+    let target, proteinPerKg, fatPct, label;
+    if(mode === 'cut'){
+      target = tdee * 0.8;
+      proteinPerKg = 2.2;
+      fatPct = 0.25;
+      label = 'السعرات اليومية — هدف التقطيع';
+    } else {
+      target = tdee * 1.15;
+      proteinPerKg = 2.0;
+      fatPct = 0.25;
+      label = 'السعرات اليومية — هدف التضخيم';
+    }
+
+    const proteinG = proteinPerKg * weight;
+    const proteinCal = proteinG * 4;
+    const fatCal = target * fatPct;
+    const fatG = fatCal / 9;
+    const carbsCal = Math.max(target - proteinCal - fatCal, 0);
+    const carbsG = carbsCal / 4;
+
+    document.getElementById('tdeeOut').textContent = Math.round(target).toLocaleString();
+    document.getElementById('tdeeLabel').textContent = label;
+
+    document.getElementById('proteinVal').textContent = Math.round(proteinG) + ' g';
+    document.getElementById('carbsVal').textContent = Math.round(carbsG) + ' g';
+    document.getElementById('fatVal').textContent = Math.round(fatG) + ' g';
+
+    document.getElementById('proteinBar').style.width = Math.min(proteinCal / target * 100, 100) + '%';
+    document.getElementById('carbsBar').style.width = Math.min(carbsCal / target * 100, 100) + '%';
+    document.getElementById('fatBar').style.width = Math.min(fatCal / target * 100, 100) + '%';
+  }
+
+  calculate();
+</script>
+
+</body>
+</html>
